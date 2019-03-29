@@ -181,7 +181,7 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
                                                         $checked = "";
                                                     }
 
-                                                    echo('<option value="'.stripAccentsAndLower($projects['name']).'_'.stripAccentsAndLower($projects['type']).'" '.$selected.'>'.$projects['name'].' - '.$projects['type'].'</option>');
+                                                    echo('<option value="'.stripAccentsAndLower($projects['lower']).'" '.$selected.'>'.$projects['name'].' - '.$projects['type'].'</option>');
                                                     $j++; //nb de projets dans la liste ++
                                                 }
                                                 ?>
@@ -228,7 +228,7 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <a href="" onclick="remove($(this))"><img src="https://img.icons8.com/metro/26/000000/trash.png"></a>
+                                            <a href="" onclick="remove($(this)); return false;"><img src="https://img.icons8.com/metro/26/000000/trash.png"></a>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -251,7 +251,7 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
                                                 $req = $bdd->query("SELECT * FROM projects");
                                                 while ($projects = $req->fetch())
                                                 {
-                                                    echo('<option value="'.stripAccentsAndLower($projects['name']).'_'.stripAccentsAndLower($projects['type']).'">'.$projects['name'].' - '.$projects['type'].'</option>');
+                                                    echo('<option value="'.stripAccentsAndLower($projects['lower']).'">'.$projects['name'].' - '.$projects['type'].'</option>');
                                                 }
                                                 ?>
                                             </select>

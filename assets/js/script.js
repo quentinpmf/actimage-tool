@@ -66,7 +66,7 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3 remove">' +
         '<div class="card rounded">' +
         '<div class="card-body p-6 center">' +
-        '<a href="" onclick="remove($(this))"><img src="https://img.icons8.com/metro/26/000000/trash.png"></centera>' +
+        '<a href="" onclick="remove($(this)); return false;"><img src="https://img.icons8.com/metro/26/000000/trash.png"></centera>' +
         '</div>' +
         '</div><!--//card-->' +
         '</div>' +
@@ -102,7 +102,7 @@ function verificationPassedTime()
         totalTime = totalTime+(parseFloat(el.value));
     });
 
-    if(totalTime > 1) {
+    if( (parseFloat(totalTime)) > 1) {
         [].forEach.call(times, function(el) {
             el.setAttribute('style', 'background-color:#FF7272;color:white');
         });
@@ -131,10 +131,10 @@ function save() {
             console.log("Sauvegardé !"+msg);
             var location = window.location.href;
             if( location.includes("isSaved")) {
-                document.location.href=window.location.href;
+                document.location.href=location;
             }
             else{
-                document.location.href=window.location.href+"&isSaved=1";
+                document.location.href=location+"&isSaved=1";
             }
 
         });
@@ -142,7 +142,6 @@ function save() {
     }
     else {
         document.getElementById("danger-alert").setAttribute('style', 'display:block');
-        document.getElementById("success-alert").setAttribute('style', 'display:none');
     }
 }
 
