@@ -11,27 +11,7 @@
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="favicon.ico">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700|Nunito:400,600,700" rel="stylesheet">
-
-    <!-- FontAwesome JS-->
-    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
-
-    <!-- Plugins CSS -->
-    <link rel="stylesheet" href="assets/plugins/jquery-flipster/dist/jquery.flipster.min.css">
-
-
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
-
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Javascript global -->
-    <script src="assets/js/script.js"></script>
-
-    <!-- CSS global -->
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <?php include('includes.php') ?>
 </head>
 
 <?php
@@ -42,7 +22,7 @@ include('mysql/connect.php');
 
     <section class="features-section py-5">
 	    <div class="container py-lg-5">
-			<form name="form" id="formGenerate" method="POST" action="test.php">
+			<form name="form" id="formGenerate" method="POST" action="generate.php">
 
                 <?php
                 $currentDate = ""; //date courante
@@ -120,7 +100,7 @@ include('mysql/connect.php');
                         echo('<h3 class="text-center font-weight-bold section-heading mt-3"><input type="checkbox" id="checkboxDates" name="'.$imputations['imputation_date'].'"><a class="black" href="index.php?imputation_date='.$imputations['imputation_date'].'"><i> '.$imputations['imputation_date'].' ('.$arrTotalPassedTime[$imputations['imputation_date']].' jh)'.'</i></a>');
 
                         if($arrTotalPassedTime[$imputations['imputation_date']] < 1) {
-                            echo(' <a href="index.php?imputation_date='.$imputations['imputation_date'].'"><i class="fa fa-plus" aria-hidden="true"></i></a>');
+                            echo('<a href="index.php?imputation_date='.$imputations['imputation_date'].'"><i class="fa fa-plus" aria-hidden="true"></i></a>');
                         }
 
                         echo('</i></h3>');

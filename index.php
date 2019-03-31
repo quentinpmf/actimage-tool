@@ -11,26 +11,7 @@
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="favicon.ico">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700|Nunito:400,600,700" rel="stylesheet">
-
-    <!-- FontAwesome JS-->
-    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
-
-    <!-- Plugins CSS -->
-    <link rel="stylesheet" href="assets/plugins/jquery-flipster/dist/jquery.flipster.min.css">
-
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
-
-	<!-- jQuery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Javascript global -->
-    <script src="assets/js/script.js"></script>
-
-    <!-- CSS global -->
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+    <?php include('includes.php') ?>
 </head>
 
 <?php
@@ -122,10 +103,18 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
 							</div><!--//card-->
 						</div>
 
-						<div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+                        <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
+                            <div class="card rounded">
+                                <div class="card-body p-6">
+                                    <b>Etat</b>
+                                </div>
+                            </div><!--//card-->
+                        </div>
+
+						<div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
 							<div class="card rounded">
 								<div class="card-body p-6">
-                                    <b>Description du travail</b>
+                                    <b>Description du travail & Remarque(s)</b>
 								</div>
 							</div><!--//card-->
 						</div>
@@ -218,10 +207,37 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
                                         </div>
                                     </div><!--//card-->
                                 </div>
-                                <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+                                <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <textarea name="description-<?php echo($i) ?>" rows="2" cols="70"><?php echo($imputations['description']) ?></textarea>
+                                            <select name="state-<?php echo($i) ?>"> <!-- état -->
+                                                <?php
+                                                $j = 1; //nb d'états dans la liste
+
+                                                $req3 = $bdd->query("SELECT * FROM states");
+                                                while ($states = $req3->fetch())
+                                                {
+                                                    //selection du projet dans la liste
+                                                    if($imputations['state'] == $j) {
+                                                        $selected = "selected";
+                                                    }
+                                                    else{
+                                                        $selected = "";
+                                                    }
+
+                                                    echo('<option value="'.stripAccentsAndLower($states['lower']).'" '.$selected.'>'.$states['libelle'].'</option>');
+                                                    $j++; //nb de projets dans la liste ++
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div><!--//card-->
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
+                                    <div class="card rounded">
+                                        <div class="card-body p-6">
+                                            <textarea name="description-<?php echo($i) ?>" rows="2" cols="40" placeholder="Description"><?php echo($imputations['description']) ?></textarea>
+                                            <input type="text" class="remarques" name="remarque-<?php echo($i) ?>" size="40" placeholder="Remarques" value="<?php echo($imputations['remarque']) ?>"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -286,10 +302,26 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
                                         </div>
                                     </div><!--//card-->
                                 </div>
-                                <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+                                <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <textarea name="description-0" rows="2" cols="70"></textarea>
+                                            <select name="state-0"> <!-- état -->
+                                                <?php
+                                                $req = $bdd->query("SELECT * FROM states");
+                                                while ($states = $req->fetch())
+                                                {
+                                                    echo('<option value="'.stripAccentsAndLower($states['lower']).'">'.$states['libelle'].'</option>');
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div><!--//card-->
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
+                                    <div class="card rounded">
+                                        <div class="card-body p-6 center">
+                                            <textarea name="description-0" rows="2" cols="40" placeholder="Description"></textarea>
+                                            <input type="text" class="remarques" name="remarque-0" size="40" placeholder="Remarques"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -312,7 +344,7 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
 				<div class="pt-5 text-center">
 					<a class="btn btn-success theme-btn theme-btn-ghost-green font-weight-bold" onclick="addRow(); return false;" id="addRow" href="">Ajouter une ligne</a>
                     <a class="btn btn-warning theme-btn theme-btn-ghost-orange font-weight-bold" onclick="save(); return false;" href="">Sauvegarder</a>
-                    <a class="btn btn-info theme-btn theme-btn-ghost font-weight-bold" href="scheduler.php">Récapitulatif semaine</a>
+                    <a class="btn btn-info theme-btn theme-btn-ghost font-weight-bold" href="scheduler.php">Mode semaine</a>
 				</div>
 
 			</form>

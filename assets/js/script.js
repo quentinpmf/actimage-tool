@@ -56,10 +56,22 @@ function addRow() {
         '</div>' +
         '</div><!--//card-->' +
         '</div>' +
-        '<div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">' +
+        '<div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">' +
+        '<div class="card rounded">' +
+        '<div class="card-body">' +
+        '<select name="state-'+number+'">' +
+        '<option value="en_developpement">En développement</option>' +
+        '<option value="en_recette_preprod">En recette - en préproduction</option>' +
+        '<option value="en_production">En production</option>' +
+        '</select>' +
+        '</div>' +
+        '</div><!--//card-->' +
+        '</div>' +
+        '<div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body p-6 center">' +
-        '<textarea name="description-'+number+'" rows="2" cols="70"></textarea>' +
+        '<textarea name="description-'+number+'" rows="2" cols="40" placeholder="Description"></textarea>' +
+        '<input type="text" class="remarques" name="remarque-0" size="40" placeholder="Remarques"/>' +
         '</div>' +
         '</div><!--//card-->' +
         '</div>' +

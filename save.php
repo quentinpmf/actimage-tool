@@ -91,6 +91,15 @@ function getProjectId($bdd,$strProjectName)
     }
 }
 
+//récupère l'ID de l'état avec son nom lower
+function getStateId($bdd,$strProjectName)
+{
+    $req = $bdd->query("SELECT id FROM states WHERE lower = '".$strProjectName."'");
+    while ($state = $req->fetch()) {
+        return $state['id'];
+    }
+}
+
 //compare une ligne du tableau avec la ligne en bdd
 function compareWithBdDLine($bdd,$data,$index)
 {
@@ -102,8 +111,10 @@ function compareWithBdDLine($bdd,$data,$index)
             && $imputation['conforme_redmine'] == (isset($data[$index]["conforme_redmine-".$index]) && $data[$index]["conforme_redmine-".$index] == "on" ? 1 : 0)
             && $imputation['passed_time'] == $data[$index]["passed_time-".$index]
             && $imputation['allocated_time'] == $data[$index]["allocated_time-".$index]
+            && $imputation['state'] == getStateId($bdd,$data[$index]["state-".$index])
             && $imputation['imputation_date'] == $_POST['imputation_date']
             && $imputation['description'] == $data[$index]["description-".$index]
+            && $imputation['remarque'] == $data[$index]["remarque-".$index]
         ){
             $boolEqual = true;
         }
@@ -124,16 +135,17 @@ function getBdDImputationsIds($bdd)
 //insère une ligne en BdD
 function insertLineInBdD($bdd,$details,$index)
 {
-    var_dump($details);
-    $req=$bdd->prepare("INSERT INTO imputations(projet_id,issue_number,conforme_redmine,passed_time,allocated_time,imputation_date,description) VALUES (:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:imputationDate,:description)");
+    $req=$bdd->prepare("INSERT INTO imputations(projet_id,issue_number,conforme_redmine,passed_time,allocated_time,state,imputation_date,description,remarque) VALUES (:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:state,:imputationDate,:description,:remarque)");
     $req->execute(array(
         'projectId'=> getProjectId($bdd,$details["projet-".$index]),
         'issueNumber'=> $details["issue_number-".$index],
         'conformeRedmine'=> (isset($details["conforme_redmine-".$index]) && $details["conforme_redmine-".$index] == "on" ? 1 : 0),
         'passedTime'=>$details["passed_time-".$index],
         'allocatedTime'=>$details["allocated_time-".$index],
+        'state'=> getStateId($bdd,$details["state-".$index]),
         'imputationDate'=>$_POST['imputation_date'],
         'description'=>$details["description-".$index],
+        'remarque'=>$details["remarque-".$index],
     ));
 }
 
@@ -141,16 +153,18 @@ function insertLineInBdD($bdd,$details,$index)
 function updateLineInBdD($bdd,$details,$index,$imputationId)
 {
     $req=$bdd->prepare("UPDATE imputations SET projet_id=:projectId, issue_number=:issueNumber,
-    conforme_redmine=:conformeRedmine,passed_time=:passedTime,allocated_time=:allocatedTime,
-    imputation_date=:imputationDate,description=:description WHERE id=:imputationId");
+    conforme_redmine=:conformeRedmine,passed_time=:passedTime,allocated_time=:allocatedTime,state=:state,
+    imputation_date=:imputationDate,description=:description,remarque=:remarque WHERE id=:imputationId");
     $req->execute(array(
         'projectId'=> getProjectId($bdd,$details["projet-".$index]),
         'issueNumber'=> $details["issue_number-".$index],
         'conformeRedmine'=> $details["conforme_redmine-".$index] == "on" ? 1 : 0,
         'passedTime'=>$details["passed_time-".$index],
         'allocatedTime'=>$details["allocated_time-".$index],
+        'state'=> getStateId($bdd,$details["state-".$index]),
         'imputationDate'=>$_POST['imputation_date'],
         'description'=>$details["description-".$index],
+        'remarque'=>$details["remarque-".$index],
         'imputationId'=>$imputationId
     ));
 }
