@@ -71,7 +71,7 @@ function addRow() {
         '<div class="card rounded">' +
         '<div class="card-body p-6 center">' +
         '<textarea name="description-'+number+'" rows="2" cols="40" placeholder="Description"></textarea>' +
-        '<input type="text" class="remarques" name="remarque-0" size="40" placeholder="Remarques"/>' +
+        '<input type="text" class="remarques" name="remarque-'+number+'" size="40" placeholder="Remarques"/>' +
         '</div>' +
         '</div><!--//card-->' +
         '</div>' +
@@ -157,6 +157,13 @@ function save() {
     }
 }
 
+function parseHtmlEntities(str) {
+    return str.replace(/&#([0-9]{1,3});/gi, function(match, numStr) {
+        var num = parseInt(numStr, 10); // read num as normal number
+        return String.fromCharCode(num);
+    });
+}
+
 function getIssueSubject(object) {
     var lineId = object[0].dataset.id;
     var issueId = object[0].value.replace('#','');
@@ -172,8 +179,8 @@ function getIssueSubject(object) {
         data:{issueId:issueId},
         success:function(data){
             if(data && data != "" ) {
-                console.log('description = ',data);
-                document.getElementsByName('description-'+lineId)[0].value = data;
+                console.log('description = ',parseHtmlEntities(data));
+                var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data);
             }
         }
     });
