@@ -1,6 +1,7 @@
 <?php
 
 include('mysql/connect.php');
+session_start();
 
 //initialisation du tableau d'imputations.
 $arrImputations = [];
@@ -104,7 +105,7 @@ function getStateId($bdd,$strProjectName)
 function compareWithBdDLine($bdd,$data,$index)
 {
     $boolEqual = false;
-    $req = $bdd->query("SELECT * FROM imputations WHERE id = '".$data[$index]['data_bdd']."'");
+    $req = $bdd->query("SELECT * FROM imputations WHERE id = '".$data[$index]['data_bdd']."' AND user_id='".$_SESSION['UserId']."'");
     while ($imputation = $req->fetch()) {
         if( $imputation['projet_id'] == getProjectId($bdd,$data[$index]["projet-".$index])
             && $imputation['issue_number'] == $data[$index]["issue_number-".$index]
@@ -125,7 +126,7 @@ function compareWithBdDLine($bdd,$data,$index)
 function getBdDImputationsIds($bdd)
 {
     $bdDImputationsIds = array();
-    $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date = '".$_POST['imputation_date']."'");
+    $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date = '".$_POST['imputation_date']."' AND user_id='".$_SESSION['UserId']."'");
     while ($imputation = $req->fetch()) {
         $bdDImputationsIds[] = $imputation['id'];
     }
@@ -135,8 +136,9 @@ function getBdDImputationsIds($bdd)
 //insère une ligne en BdD
 function insertLineInBdD($bdd,$details,$index)
 {
-    $req=$bdd->prepare("INSERT INTO imputations(projet_id,issue_number,conforme_redmine,passed_time,allocated_time,state,imputation_date,description,remarque) VALUES (:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:state,:imputationDate,:description,:remarque)");
+    $req=$bdd->prepare("INSERT INTO imputations(user_id,projet_id,issue_number,conforme_redmine,passed_time,allocated_time,state,imputation_date,description,remarque) VALUES (:userId,:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:state,:imputationDate,:description,:remarque)");
     $req->execute(array(
+        'userId'=> $_SESSION['UserId'],
         'projectId'=> getProjectId($bdd,$details["projet-".$index]),
         'issueNumber'=> $details["issue_number-".$index],
         'conformeRedmine'=> (isset($details["conforme_redmine-".$index]) && $details["conforme_redmine-".$index] == "on" ? 1 : 0),
@@ -152,10 +154,11 @@ function insertLineInBdD($bdd,$details,$index)
 //insère une ligne en BdD
 function updateLineInBdD($bdd,$details,$index,$imputationId)
 {
-    $req=$bdd->prepare("UPDATE imputations SET projet_id=:projectId, issue_number=:issueNumber,
+    $req=$bdd->prepare("UPDATE imputations SET user_id=:userId, projet_id=:projectId, issue_number=:issueNumber,
     conforme_redmine=:conformeRedmine,passed_time=:passedTime,allocated_time=:allocatedTime,state=:state,
     imputation_date=:imputationDate,description=:description,remarque=:remarque WHERE id=:imputationId");
     $req->execute(array(
+        'userId'=> $_SESSION['UserId'],
         'projectId'=> getProjectId($bdd,$details["projet-".$index]),
         'issueNumber'=> $details["issue_number-".$index],
         'conformeRedmine'=> $details["conforme_redmine-".$index] == "on" ? 1 : 0,
@@ -179,9 +182,10 @@ function getImputationsToDelete($bdDImputationsIds,$boolCommunImputationsIds)
 function deleteImputationInBdd($bdd, $arrImputationsIdsToDelete)
 {
     foreach($arrImputationsIdsToDelete as $imputationIdToDelete) { //pour chaque imputation a supprimer
-        $req=$bdd->prepare("DELETE FROM imputations WHERE id=:imputationIdToDelete");
+        $req=$bdd->prepare("DELETE FROM imputations WHERE id=:imputationIdToDelete AND user_id=:userId");
         $req->execute(array(
-            'imputationIdToDelete'=> $imputationIdToDelete
+            'imputationIdToDelete'=> $imputationIdToDelete,
+            'userId'=> $_SESSION['UserId']
         ));
     }
 }

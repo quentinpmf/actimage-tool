@@ -139,7 +139,7 @@ if(!isset($_SESSION['UserEmail']))
                     <?php
 
                     //récupération des imputations du jour
-                    $req = $bdd->query("SELECT COUNT(*) as 'nbImputationsForThisDay' FROM imputations WHERE imputation_date = '".$imputation_date."'");
+                    $req = $bdd->query("SELECT COUNT(*) as 'nbImputationsForThisDay' FROM imputations WHERE imputation_date = '".$imputation_date."' AND user_id='".$_SESSION['UserId']."'");
                     $res = $req->fetch();
                     $nbImputationsForThisDay = $res['nbImputationsForThisDay'];
 
@@ -147,7 +147,7 @@ if(!isset($_SESSION['UserEmail']))
                     //récupération des imputations pour le jour en cours, si il y en à
                     if($nbImputationsForThisDay > 0) {
                         //récupération des imputations pour le jour en cours, si il y en à
-                        $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date = '".$imputation_date."' ORDER BY id ASC");
+                        $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date = '".$imputation_date."' AND user_id='".$_SESSION['UserId']."' ORDER BY id ASC");
                         while ($imputations = $req->fetch())
                         {
                             ?>

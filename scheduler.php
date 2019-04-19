@@ -28,6 +28,10 @@ if(!isset($_SESSION['UserEmail']))
 
     <?php include('includes/navbar.php') ?>
 
+    <div class="pt-5 text-center">
+        <a class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold" onclick="generate(); return false;" href="#">Générer le reporting hebdo</a>
+    </div>
+
     <section class="features-section py-5">
 	    <div class="container py-lg-5">
 			<form name="form" id="formGenerate" method="POST" action="generate.php">
@@ -58,13 +62,13 @@ if(!isset($_SESSION['UserEmail']))
 
                 //récupération du temps total passé par jour
                 $arrTotalPassedTime = array();
-                $req4 = $bdd->query("SELECT SUM(passed_time) as 'totalPassedTime',imputation_date FROM imputations GROUP BY imputation_date DESC");
+                $req4 = $bdd->query("SELECT SUM(passed_time) as 'totalPassedTime',imputation_date FROM imputations WHERE user_id=".$_SESSION['UserId']." GROUP BY imputation_date DESC");
                 while ($timeData = $req4->fetch()) {
                     $arrTotalPassedTime[$timeData['imputation_date']] = $timeData['totalPassedTime'];
                 }
 
                 //récupération des imputations rangés par jour décroissante
-                $req5 = $bdd->query("SELECT * FROM imputations ORDER BY imputation_date DESC");
+                $req5 = $bdd->query("SELECT * FROM imputations WHERE user_id=".$_SESSION['UserId']." ORDER BY imputation_date  DESC");
                 while ($imputations = $req5->fetch())
                 {
                     $marge = $imputations['allocated_time']-$imputations['passed_time'];
@@ -163,9 +167,6 @@ if(!isset($_SESSION['UserEmail']))
                 }
                 ?>
 
-                <div class="pt-5 text-center">
-                    <a class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold" onclick="generate(); return false;" href="#">Générer le reporting hebdo</a>
-                </div>
 
 			</form>
 	    </div><!--//container-->

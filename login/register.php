@@ -16,8 +16,9 @@
 
     <!-- Custom styles for this template -->
     <style>
-        .login-page {
+        ..login-page {
             width: 360px;
+            padding: 8% 0 0;
             margin: auto;
         }
         .form {
@@ -26,7 +27,7 @@
             background: #FFFFFF;
             max-width: 360px;
             margin: 0 auto 100px;
-            padding: 20px;
+            padding: 45px;
             text-align: center;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
@@ -43,7 +44,7 @@
         .form button {
             text-transform: uppercase;
             outline: 0;
-            background: #f71037;
+            background: #ff632c;
             width: 100%;
             border: 0;
             padding: 15px;
@@ -52,7 +53,7 @@
             cursor: pointer;
         }
         .form button:hover,.form button:active,.form button:focus {
-            background: #43A047;
+            background: #f71037;
         }
         .form .message {
             margin: 15px 0 0;
@@ -60,7 +61,7 @@
             font-size: 12px;
         }
         .form .message a {
-            color: #f71037;
+            color: #ff632c;
             text-decoration: none;
         }
         .form .register-form {
@@ -101,11 +102,11 @@
             color: #EF3B3A;
         }
         body {
-            background: 	#ff632c; /* fallback for old browsers */
-            background: -webkit-linear-gradient(right, #ff632c, #f71037);
-            background: -moz-linear-gradient(right, #ff632c, #f71037);
-            background: -o-linear-gradient(right, #ff632c, #f71037);
-            background: linear-gradient(to left, #ff632c, #f71037);
+            background: 	#f71037; /* fallback for old browsers */
+            background: -webkit-linear-gradient(right, #f71037, #ff632c);
+            background: -moz-linear-gradient(right, #f71037, #ff632c);
+            background: -o-linear-gradient(right, #f71037, #ff632c);
+            background: linear-gradient(to left, #f71037, #ff632c);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
