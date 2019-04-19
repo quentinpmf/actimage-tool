@@ -42,9 +42,17 @@ if(isset($_GET['isSaved']) && $_GET['isSaved'] == 1) {
     $boolSaved = true;
 }
 
+session_start();
+if(!isset($_SESSION['UserEmail']))
+{
+    header('location:login/login.php');
+}
+
 ?>
 
 <body>
+
+    <?php include('includes/navbar.php') ?>
 
     <section class="features-section py-5">
 	    <div class="container py-lg-5">
