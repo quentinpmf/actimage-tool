@@ -168,9 +168,6 @@ function getIssueSubject(object) {
     var lineId = object[0].dataset.id;
     var issueId = object[0].value.replace('#','');
 
-    document.getElementsByName('description-'+lineId)[0].value = "";
-    document.getElementsByName('allocated_time-'+lineId)[0].value = "";
-
     document.getElementById("loading").setAttribute('style', 'display:block');
 
     //récupération du nom de la demande
@@ -182,6 +179,7 @@ function getIssueSubject(object) {
         success:function(data){
             if(data && data != "" ) {
                 console.log('description = ',parseHtmlEntities(data));
+                document.getElementsByName('description-'+lineId)[0].value = "";
                 var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data);
             }
         }
@@ -196,12 +194,13 @@ function getIssueSubject(object) {
         success:function(data){
             if(data && data != "" ) {
                 console.log('allocated_time = ',data);
+                document.getElementsByName('allocated_time-'+lineId)[0].value = "";
                 document.getElementsByName('allocated_time-'+lineId)[0].value = data;
             }
         }
     });
 
-    setTimeout("hideSpinner()", 1000); // after 5 secs
+    setTimeout("hideSpinner()", 1000); // après 1 sec
 }
 
 function hideSpinner() {
