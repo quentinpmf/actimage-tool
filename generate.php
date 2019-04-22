@@ -10,12 +10,26 @@
     <meta name="description" content="Bootstrap 4 Mobile App Template">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <link rel="shortcut icon" href="favicon.ico">
+    <script src="assets/ckeditor/ckeditor.js"></script>
 
     <?php include('includes.php') ?>
 </head>
 
 <?php
 include('mysql/connect.php');
+
+session_start();
+if(!isset($_SESSION['UserEmail']))
+{
+    header('location:login/login.php');
+}
+
+include('includes/navbar.php');
+
+$txt = "<p><u>Projets :</u></p>"
+    ."<ul>";
+$strLastProject = "";
+$boolULopen = false;
 
 if(isset($_POST) && !empty($_POST))
 {
@@ -28,7 +42,7 @@ if(isset($_POST) && !empty($_POST))
     $strImputationsToInclude = implode("','", $arrImputationsToInclude); //imputations en string
 
     //récupération des imputations
-    $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date IN('$strImputationsToInclude') ORDER BY 'project_id' DESC");
+    $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date IN('$strImputationsToInclude') AND user_id=".$_SESSION['UserId']." ORDER BY `projet_id` ASC");
     while ($imputation = $req->fetch())
     {
         $req2 = $bdd->query("SELECT * FROM projects WHERE id='".$imputation['projet_id']."'");
@@ -49,14 +63,25 @@ if(isset($_POST) && !empty($_POST))
                 $strDepassement = 'Pas de dépassement';
             }
 
-            echo('- '.$project['name'].' ('.$project['type'].') :'.'</br>');
-            echo('o '.$imputation['description'].' ('.$conformeRedmine.' / '.$strDepassement.') : ');
+            $fullProjectName = $project['name'].' ('.$project['type'].')';
+            if($strLastProject != $fullProjectName){
+                if($boolULopen)
+                {
+                    $txt .= '</ul>';
+                }
+                $txt .= '<li><b>'.$fullProjectName.' : </b>'
+                    .'<ul>';
+                $boolULopen = true;
+            }
+            $txt .= '<li> '.$imputation['description'].' ('.$conformeRedmine.' / '.$strDepassement.') : ';
+
+            $strLastProject = $fullProjectName;
         }
 
         $req3 = $bdd->query("SELECT * FROM states WHERE id='".$imputation['state']."'");
         while ($state = $req3->fetch())
         {
-            echo($state['libelle']);
+            $txt .= $state['libelle'];
         }
 
         $remarque = $imputation['remarque'];
@@ -64,13 +89,17 @@ if(isset($_POST) && !empty($_POST))
             $remarque = " / ".$remarque;
         }
 
-        echo($state['libelle'].$remarque."</br>");
+        $txt .= $state['libelle'].$remarque.'</li>';
     }
 }
 else
 {
-    echo('veuillez sélectionner au moins un jour');
+    header('location:scheduler?error=noImputationsSelected');
 }
+
+$txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technologie SharePoint 2016
+- Client dépassant les durées prévues pour les points quinzomadaires
+- Nécessité de revoir le mode organisationnel concernant la validation des livrables de recette";
 
 ?>
 
@@ -78,22 +107,137 @@ else
 
 <section class="features-section py-5">
     <div class="container py-lg-5">
-        <form name="form" id="formGenerate" method="POST" action="generate_2.php">
+        <form name="form" id="formGenerate" method="POST" action="reporting_hebdo.php">
             <h3 class="mb-3 text-center font-weight-bold section-heading">Données reporting hebdo</h3>
 
             <div id="rows">
 
-                <!-- en tête -->
                 <div class="row">
-                    <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
                         <div class="card rounded">
                             <div class="card-body p-6">
-                                <b>Choix du projet</b>
+                                <b>Projection / Analyse qualitative</b>
                             </div>
                         </div><!--//card-->
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                            <div class="card-body nocolor">
+                                <textarea name="analyse_qualitative" rows="4" cols="190" placeholder="<?php echo($txtAnalyseQualitative); ?>"></textarea>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card rounded">
+                            <div class="card-body p-6">
+                                <b>Projection / Analyse quantitative</b>
+                            </div>
+                        </div><!--//card-->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card-body nocolor">
+
+                            <!--
+                            <ul>
+                                <li>&nbsp;April (TMA) :
+                                    <ul>
+                                        <li>1 (Conforme Redmine / Pas de d&eacute;passement) : En d&eacute;veloppement / 1</li>
+                                        <li>test2</li>
+                                    </ul>
+                                </li>
+                                <li>April (EVOLUTIONS) :&nbsp;
+                                    <ul>
+                                        <li>test1</li>
+                                        <li>test2</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            -->
+
+                            <textarea id="editor1" name="analyse_quantitative" rows="10" cols="190" placeholder="Description"><?php echo($txt); ?></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card rounded">
+                            <div class="card-body p-6">
+                                <b>Consulting</b>
+                            </div>
+                        </div><!--//card-->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card-body nocolor">
+                            <span class="alignleft"><b>Commercial</b></span>
+                            <span class="alignright"><textarea name="consulting_commercial" rows="1" cols="170">RAS</textarea></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card-body nocolor">
+                            <span class="alignleft"><b>RH</b></span>
+                            <span class="alignright"><textarea name="consulting_rh" rows="1" cols="170">RAS</textarea></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card-body nocolor">
+                            <span class="alignleft"><b>Déplacement(s)</b></span>
+                            <span class="alignright"><textarea name="consulting_deplacements" rows="1" cols="170">RAS</textarea></span>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div class="card rounded">
+                            <div class="card-body p-6">
+                                <span class="alignleft"><b>Congés / Fériés</b></span>
+                                <span class="alignright"><a onclick="addDatePickerReporting(event);"><i class="fa fa-plus" aria-hidden="true"></i></a></span>
+                            </div>
+                        </div><!--//card-->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
+                        <div id="conges_feries">
+                            <div class="card-body nocolor congesFeriesLine">
+                                <input onfocusout="datepickerReporting(event);" name="conges_feries-0" type="date"/>
+                                <input type="text" name="justificatif-conges-0" name="justificatif-conges-0" placeholder="Justificatif" size="50"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-5 text-center">
+                    <input type="submit" value="Générer le reporting hebdo" class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold">
+                </div>
+
             </div>
         </form>
     </div>
 </section>
+
+</body>
+
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>

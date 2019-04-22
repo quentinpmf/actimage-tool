@@ -153,3 +153,19 @@ h3 input{
         transform: rotate(360deg);
     }
 }
+
+.nocolor{
+    background-color:white;
+    border:0px white;
+}
+
+.withoutspace{
+    padding-top:0px;
+}
+
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
+}

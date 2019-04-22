@@ -168,6 +168,9 @@ function getIssueSubject(object) {
     var lineId = object[0].dataset.id;
     var issueId = object[0].value.replace('#','');
 
+    document.getElementsByName('allocated_time-'+lineId)[0].value = "";
+    document.getElementsByName('description-'+lineId)[0].value = "";
+
     document.getElementById("loading").setAttribute('style', 'display:block');
 
     //récupération du nom de la demande
@@ -179,7 +182,6 @@ function getIssueSubject(object) {
         success:function(data){
             if(data && data != "" ) {
                 console.log('description = ',parseHtmlEntities(data));
-                document.getElementsByName('description-'+lineId)[0].value = "";
                 var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data);
             }
         }
@@ -194,7 +196,6 @@ function getIssueSubject(object) {
         success:function(data){
             if(data && data != "" ) {
                 console.log('allocated_time = ',data);
-                document.getElementsByName('allocated_time-'+lineId)[0].value = "";
                 document.getElementsByName('allocated_time-'+lineId)[0].value = data;
             }
         }
@@ -238,3 +239,33 @@ function datepickerOnChange(event){
 setTimeout(function() {
     $('#success-alert').fadeOut('slow');
 }, 3000); // <-- 3sec
+
+function addDatePickerReporting(event){
+
+    //ajout d'une ligne
+    var number = document.getElementsByClassName("congesFeriesLine").length;
+    var projectSelection = "";
+
+    <!-- lignes suivantes -->
+    var contentRow = ''+
+        '<div class="card-body nocolor withoutspace congesFeriesLine">' +
+        '<input onchange="datepickerReporting(event);" name="conges_feries-'+number+'" type="date"/>&nbsp;' +
+        '<input type="text" name="justificatif-conges-'+number+'" placeholder="Justificatif" size="50"/>'
+        '</div>'
+    ;
+
+    //récupération des values déja entrées dans les lignes plus haut
+    $("input[type=date]").each(function(){
+        $(this).attr('value', function (i, val) { return $(this).val(); });
+    });
+
+    $("input[type=text]").each(function(){
+        $(this).attr('value', function (i, val) { return $(this).val(); });
+    });
+    $('input[type=checkbox],input[type=radio]').attr('checked', function () { return this.checked; });
+    $('textarea').html(function () { return this.value; });
+    $('select').find(':selected').attr('selected', 'selected');
+
+    var congesFeriesDiv = document.getElementById("conges_feries");
+    congesFeriesDiv.innerHTML = congesFeriesDiv.innerHTML + contentRow;
+}

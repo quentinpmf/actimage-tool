@@ -22,6 +22,12 @@ if(!isset($_SESSION['UserEmail']))
     header('location:login/login.php');
 }
 
+//affiche l'alert error
+$boolError = false;
+if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
+    $boolError = true;
+}
+
 ?>
 
 <body>
@@ -32,9 +38,14 @@ if(!isset($_SESSION['UserEmail']))
         <a class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold" onclick="generate(); return false;" href="#">Générer le reporting hebdo</a>
     </div>
 
-    <section class="features-section py-5">
+    <section class="features-section">
 	    <div class="container py-lg-5">
 			<form name="form" id="formGenerate" method="POST" action="generate.php">
+
+                <!-- alert après enregistrement -->
+                <?php if($boolError){
+                    echo('<div class="alert alert-danger center" id="scheduler-danger-alert" role="alert">Veuillez sélectionner au moins une journée.</div><br>');
+                } ?>
 
                 <?php
                 $currentDate = ""; //date courante
@@ -109,13 +120,13 @@ if(!isset($_SESSION['UserEmail']))
                         }
 
                         //contenu du jour
-                        echo('<h3 class="text-center font-weight-bold section-heading mt-3"><input type="checkbox" id="checkboxDates" name="'.$imputations['imputation_date'].'"><a class="black" href="index.php?imputation_date='.$imputations['imputation_date'].'"><i> '.$imputations['imputation_date'].' ('.$arrTotalPassedTime[$imputations['imputation_date']].' jh)'.'</i></a>');
+                        echo('<h4 class="text-center font-weight-bold section-heading mt-3"><input type="checkbox" id="checkboxDates" name="'.$imputations['imputation_date'].'"><a class="black" href="index.php?imputation_date='.$imputations['imputation_date'].'"><i> '.$imputations['imputation_date'].' ('.$arrTotalPassedTime[$imputations['imputation_date']].' jh)'.'</i></a>');
 
                         if($arrTotalPassedTime[$imputations['imputation_date']] < 1) {
                             echo('<a href="index.php?imputation_date='.$imputations['imputation_date'].'"><i class="fa fa-plus" aria-hidden="true"></i></a>');
                         }
 
-                        echo('</i></h3>');
+                        echo('</i></h4>');
                         echo('<div class="row">'); //ouverture div
 
                         ?>
