@@ -240,4 +240,5 @@ $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technol
 
 <script>
     CKEDITOR.replace( 'editor1' );
+    CKEDITOR.config.height = 200;
 </script>
