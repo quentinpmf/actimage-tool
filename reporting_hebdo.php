@@ -31,3 +31,7 @@ if(isset($_POST) && !empty($_POST)) {
 }
 
 ?>
+
+<body>
+
+</body>

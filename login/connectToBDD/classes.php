@@ -1,7 +1,7 @@
 <?php
 
 class user{
-    private $UserId, $UserEmail, $UserPassword, $UserNom, $UserPrenom, $UserLastResumeLocation;
+    private $UserId, $UserEmail, $UserPassword, $UserRole, $UserNom, $UserPrenom, $UserLastResumeLocation;
 
 	/*Création de fonction pour allez chercher les informations */
 	
@@ -27,6 +27,14 @@ class user{
     }
     public function setUserPassword($UserPassword){
         $this->UserPassword=$UserPassword;
+    }
+
+    //Password
+    public function getUserRole(){
+        return $this->UserRole;
+    }
+    public function setUserRole($UserRole){
+        $this->UserRole=$UserRole;
     }
 
     //Nom
@@ -72,6 +80,7 @@ class user{
                 $this->setUserPassword($data['password']);
                 $this->setUserNom($data['nom']);
                 $this->setUserPrenom($data['prenom']);
+                $this->setUserRole($data['role']);
 
                 //requete pour récuperer le last resume location
                 $req2=$bdd->prepare("SELECT * FROM users_resumes WHERE user_id=:UserId ORDER BY id DESC LIMIT 1");

@@ -12,6 +12,19 @@
     <link rel="shortcut icon" href="favicon.ico">
 
     <?php include('includes.php') ?>
+
+    <style>
+        .stripped{
+            background: repeating-linear-gradient(
+                    45deg,
+                    #E6E1DC,
+                    #E6E1DC 10px,
+                    #F5F2EE 10px,
+                    #F5F2EE 20px
+            );
+            color:black;
+        }
+    </style>
 </head>
 
 <?php
@@ -119,21 +132,36 @@ if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
                             echo('</div>'); //fermeture <div class="row">
                         }
 
-                        //contenu du jour
-                        echo('<h4 class="text-center font-weight-bold section-heading mt-3"><input type="checkbox" id="checkboxDates" name="'.$imputations['imputation_date'].'"><a class="black" href="index.php?imputation_date='.$imputations['imputation_date'].'"><i> '.$imputations['imputation_date'].' ('.$arrTotalPassedTime[$imputations['imputation_date']].' jh)'.'</i></a>');
 
-                        if($arrTotalPassedTime[$imputations['imputation_date']] < 1) {
-                            echo('<a href="index.php?imputation_date='.$imputations['imputation_date'].'"><i class="fa fa-plus" aria-hidden="true"></i></a>');
-                        }
+                        ?>
 
-                        echo('</i></h4>');
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12 checkCheckbox">
+                                <div class="card rounded">
+                                    <div class="card-body p-6">
+                                        <span class="alignleft">
+                                            <b>
+                                                <a style="color:#526b84" href="index.php?imputation_date=<?php echo($imputations['imputation_date']); ?>">
+                                                    <?php echo($imputations['imputation_date'].' ('.$arrTotalPassedTime[$imputations['imputation_date']].' jh)'); ?></i>
+                                                </a>
+                                            </b>
+                                        </span>
+                                        <span class="alignright"><input type="checkbox" id="checkboxDates" name="<?php echo($imputations['imputation_date']); ?>"></span>
+
+                                    </div>
+                                </div><!--//card-->
+                            </div>
+                        </div>
+
+                        <?php
+
                         echo('<div class="row">'); //ouverture div
 
                         ?>
                         <!-- en tête -->
                         <div class="col-12 col-md-6 col-xl-<?php echo($width); ?> pr-xl-3">
-                            <div class="card rounded">
-                                <div class="card-body">
+                            <div class="card rounded mt-2 mb-2">
+                                <div class="card-body nocolor stripped">
                                     <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type'].' ('.$imputations['issue_number'].') </b></br>');
                                     echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh > '.$imputations['allocated_time'].'jh </span></br>');
                                     echo('<i>'.$imputations['description'].'</i>'); ?>
@@ -154,8 +182,8 @@ if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
                         ?>
                         <!-- en tête -->
                         <div class="col-12 col-md-6 col-xl-<?php echo($width); ?> pr-xl-3">
-                            <div class="card rounded">
-                                <div class="card-body">
+                            <div class="card rounded mt-2 mb-2">
+                                <div class="card-body nocolor stripped">
                                     <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type'].' ('.$imputations['issue_number'].') </b></br>');
                                     echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh > '.$imputations['allocated_time'].'jh </span></br>');
                                     echo('<i>'.$imputations['description'].'</i>'); ?>

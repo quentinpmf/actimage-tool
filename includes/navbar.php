@@ -15,7 +15,15 @@
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" style="color:white" href="login/logout.php"><img src="assets/images/logout.png" alt="Déconnexion"></a>
+                <?php
+                    if($_SESSION['UserRole'] == 1)
+                    {
+                        echo('<a style="color:white" href="admin/index.php"><img src="assets/images/user.png" alt="Administration"></a>&nbsp;');
+                    }
+                ?>
+
+                <a style="color:white" href="login/logout.php"><img src="assets/images/logout.png" alt="Déconnexion"></a>
+                &nbsp;
             </li>
         </ul>
     </div>
