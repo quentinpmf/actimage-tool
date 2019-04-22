@@ -171,6 +171,8 @@ function getIssueSubject(object) {
     document.getElementsByName('description-'+lineId)[0].value = "";
     document.getElementsByName('allocated_time-'+lineId)[0].value = "";
 
+    document.getElementById("loading").setAttribute('style', 'display:block');
+
     //récupération du nom de la demande
     $.ajax({
         type:'POST',
@@ -198,8 +200,13 @@ function getIssueSubject(object) {
             }
         }
     });
+
+    setTimeout("hideSpinner()", 1000); // after 5 secs
 }
 
+function hideSpinner() {
+    document.getElementById("loading").setAttribute('style', 'display:none');
+}
 
 //valide le formulaire
 function generate() {

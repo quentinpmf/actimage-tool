@@ -136,6 +136,9 @@ if(!isset($_SESSION['UserEmail']))
 						</div>
 					</div>
 
+                    <!-- spinner appel AJAX -->
+                    <div id="loading" style="display:none">Loading&#8230;</div>
+
                     <?php
 
                     //récupération des imputations du jour
