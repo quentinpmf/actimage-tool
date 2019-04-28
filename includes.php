@@ -1,3 +1,6 @@
+<!-- Favicon -->
+<link rel="shortcut icon" href="assets/images/favicon.ico">
+
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700|Nunito:400,600,700" rel="stylesheet">
 

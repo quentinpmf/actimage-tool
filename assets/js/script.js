@@ -173,30 +173,18 @@ function getIssueSubject(object) {
 
     document.getElementById("loading").setAttribute('style', 'display:block');
 
-    //récupération du nom de la demande
+    //récupération du nom de la demande + temps estimé
     $.ajax({
         type:'POST',
-        url:'redmine/getSubject.php',
+        url:'assets/php-redmine-api/getInfos.php',
         dataType: "json",
         data:{issueId:issueId},
         success:function(data){
-            if(data && data != "" ) {
-                console.log('description = ',parseHtmlEntities(data));
-                var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data);
-            }
-        }
-    });
-
-    //récupération du temps estimé
-    $.ajax({
-        type:'POST',
-        url:'redmine/getAllocatedTime.php',
-        dataType: "json",
-        data:{issueId:issueId},
-        success:function(data){
-            if(data && data != "" ) {
-                console.log('allocated_time = ',data);
-                document.getElementsByName('allocated_time-'+lineId)[0].value = data;
+            if(data && data['total_estimated_hours'] != "" && data['subject'] != "" ) {
+                console.log('description = ',parseHtmlEntities(data['subject']));
+                var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data['subject']);
+                console.log('allocated_time = ',data['total_estimated_hours']);
+                document.getElementsByName('allocated_time-'+lineId)[0].value = data['total_estimated_hours'];
             }
         }
     });
