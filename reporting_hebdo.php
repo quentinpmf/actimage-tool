@@ -15,7 +15,7 @@
 </head>
 
 <?php
-include('mysql/connect.php');
+include('login/connectToBDD/conn.php');
 
 session_start();
 if(!isset($_SESSION['UserEmail']))

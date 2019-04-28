@@ -14,7 +14,7 @@
 </head>
 
 <?php
-include('mysql/connect.php');
+include('login/connectToBDD/conn.php');
 
 //enleve les accents dans la chaine donnée et met en minuscule
 function stripAccentsAndLower($str) {

@@ -1,6 +1,6 @@
 <?php
 
-include('mysql/connect.php');
+include('login/connectToBDD/conn.php');
 session_start();
 
 //initialisation du tableau d'imputations.
