@@ -1,19 +1,23 @@
 <?php
 
-require_once '../assets/php-redmine-api/src/autoload.php';
+require_once 'src/autoload.php';
 $client = new Redmine\Client('https://redmine-web.actimage-ext.net', '86465e7b572453f8045c8f8d3b469a4fe9af20d8');
 
-$issueId = '25524';
+$array = array();
 
-$issueDetails = $client->issue->show($issueId);
+if(isset($_POST['issueId']) && $_POST['issueId'] != "")
+{
+    $issueId = $_POST['issueId'];
+    $issueDetails = $client->issue->show($issueId);
 
-$total_estimated_hours = $issueDetails['issue']['total_estimated_hours'];
-$subject = $issueDetails['issue']['subject'];
+    $total_estimated_hours = $issueDetails['issue']['total_estimated_hours'];
+    $subject = $issueDetails['issue']['subject'];
 
-$array = array(
-    "total_estimated_hours" => $total_estimated_hours / 8,
-    "subject" => $subject,
-);
+    $array = array(
+        "total_estimated_hours" => $total_estimated_hours / 8,
+        "subject" => $subject,
+    );
+}
 
 echo json_encode($array);
 
