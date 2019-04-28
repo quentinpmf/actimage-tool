@@ -169,3 +169,7 @@ h3 input{
 .alignright {
     float: right;
 }
+
+.imgcenter{
+    text-align: center;
+}

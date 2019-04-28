@@ -10,7 +10,7 @@
     <meta name="description" content="Actitool">
     <meta name="author" content="Quentin Boudinot">
 
-    <?php include('includes.php') ?>
+    <?php include('includes/top_page.php') ?>
 
     <style>
         .stripped{

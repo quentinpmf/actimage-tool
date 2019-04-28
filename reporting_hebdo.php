@@ -11,7 +11,7 @@
     <meta name="author" content="Quentin Boudinot">
     <script src="assets/ckeditor/ckeditor.js"></script>
 
-    <?php include('includes.php') ?>
+    <?php include('includes/top_page.php') ?>
 </head>
 
 <?php

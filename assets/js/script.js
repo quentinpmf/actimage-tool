@@ -257,3 +257,29 @@ function addDatePickerReporting(event){
     var congesFeriesDiv = document.getElementById("conges_feries");
     congesFeriesDiv.innerHTML = congesFeriesDiv.innerHTML + contentRow;
 }
+
+function changerUserRole(event){
+
+    document.getElementById("loading").setAttribute('style', 'display:block');
+
+    var selectedIndex = event['0'].options.selectedIndex + 1;
+    var selectName = event['0'].name;
+    var splitSelectName = selectName.split('user_role-');
+    var userId = splitSelectName["1"];
+
+    console.log(userId+'/'+selectedIndex);
+    //changement du role de l'utilisateur
+    $.ajax({
+        type:'POST',
+        url:'changeUserRole.php',
+        dataType: "json",
+        data:{userId:userId, newRole:selectedIndex},
+        success:function(data){
+            console.log('data = ',data);
+            if(data) {
+                console.log('Changement de role pour '+userId+' ('+selectedIndex+')');
+                document.location.href=window.location.href; //redirection vers page actuelle
+            }
+        }
+    });
+}
