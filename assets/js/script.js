@@ -10,6 +10,8 @@ function addRow() {
         '<div class="card rounded">' +
         '<div class="card-body">' +
         '<select name="projet-'+number+'">' +
+        '<option value="an-parlement-des-enfants_projet">AN - Parlement des enfants - Projet</option>' +
+        '<option value="an-parlement-des-enfants_maintenance">AN - Parlement des enfants - Maintenance</option>' +
         '<option value="april_tma">April - TMA</option>' +
         '<option value="april_evols">April - Evols</option>' +
         '<option value="batigere_tma">Batigère - TMA</option>' +

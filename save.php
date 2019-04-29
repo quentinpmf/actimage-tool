@@ -136,19 +136,22 @@ function getBdDImputationsIds($bdd)
 //insère une ligne en BdD
 function insertLineInBdD($bdd,$details,$index)
 {
-    $req=$bdd->prepare("INSERT INTO imputations(user_id,projet_id,issue_number,conforme_redmine,passed_time,allocated_time,state,imputation_date,description,remarque) VALUES (:userId,:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:state,:imputationDate,:description,:remarque)");
-    $req->execute(array(
-        'userId'=> $_SESSION['UserId'],
-        'projectId'=> getProjectId($bdd,$details["projet-".$index]),
-        'issueNumber'=> $details["issue_number-".$index],
-        'conformeRedmine'=> (isset($details["conforme_redmine-".$index]) && $details["conforme_redmine-".$index] == "on" ? 1 : 0),
-        'passedTime'=>$details["passed_time-".$index],
-        'allocatedTime'=>$details["allocated_time-".$index],
-        'state'=> getStateId($bdd,$details["state-".$index]),
-        'imputationDate'=>$_POST['imputation_date'],
-        'description'=>$details["description-".$index],
-        'remarque'=>$details["remarque-".$index],
-    ));
+    //si il y à un temps passé
+    if($details["passed_time-".$index] != ""){
+        $req=$bdd->prepare("INSERT INTO imputations(user_id,projet_id,issue_number,conforme_redmine,passed_time,allocated_time,state,imputation_date,description,remarque) VALUES (:userId,:projectId,:issueNumber,:conformeRedmine,:passedTime,:allocatedTime,:state,:imputationDate,:description,:remarque)");
+        $req->execute(array(
+            'userId'=> $_SESSION['UserId'],
+            'projectId'=> getProjectId($bdd,$details["projet-".$index]),
+            'issueNumber'=> $details["issue_number-".$index],
+            'conformeRedmine'=> (isset($details["conforme_redmine-".$index]) && $details["conforme_redmine-".$index] == "on" ? 1 : 0),
+            'passedTime'=>$details["passed_time-".$index],
+            'allocatedTime'=>$details["allocated_time-".$index],
+            'state'=> getStateId($bdd,$details["state-".$index]),
+            'imputationDate'=>$_POST['imputation_date'],
+            'description'=>$details["description-".$index],
+            'remarque'=>$details["remarque-".$index],
+        ));
+    }
 }
 
 //insère une ligne en BdD

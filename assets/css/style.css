@@ -173,3 +173,12 @@ h3 input{
 .imgcenter{
     text-align: center;
 }
+
+.nostylelink{
+    font-size: 25px;
+    color:black;
+}
+
+.nostylelink:hover{
+    text-decoration: none;
+}

@@ -38,20 +38,20 @@ if(!isset($_SESSION['UserEmail']))
                     <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">&nbsp;</div>
 
                     <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
-                        <a href="gestion_utilisateurs.php">
+                        <a class="nostylelink" href="gestion_utilisateurs.php">
                             <div class="card rounded">
                                 <div class="card-body p-6 imgcenter">
-                                    <img src="../assets/images/admin/gestion_utilisateurs.png">
+                                    Gestion Utilisateurs
                                 </div>
                             </div><!--//card-->
                         </a>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
-                        <a href="gestion_projets.php">
+                        <a class="nostylelink" href="gestion_projets.php">
                             <div class="card rounded">
                                 <div class="card-body p-6 imgcenter">
-                                    <img src="../assets/images/admin/gestion_projets.png">
+                                    Gestion Projets
                                 </div>
                             </div><!--//card-->
                         </a>
