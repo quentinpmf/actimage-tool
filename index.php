@@ -159,13 +159,12 @@ if(!isset($_SESSION['UserEmail']))
                                         <div class="card-body">
                                             <select name="projet-<?php echo($i) ?>" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
                                                 <?php
-                                                $j = 1; //nb de projets dans la liste
 
                                                 $req2 = $bdd->query("SELECT * FROM projects");
                                                 while ($projects = $req2->fetch())
                                                 {
                                                     //selection du projet dans la liste
-                                                    if($imputations['projet_id'] == $j) {
+                                                    if($imputations['projet_id'] == $projects['id']) {
                                                         $selected = "selected";
                                                     }
                                                     else{
@@ -181,7 +180,6 @@ if(!isset($_SESSION['UserEmail']))
                                                     }
 
                                                     echo('<option value="'.stripAccentsAndLower($projects['lower']).'" '.$selected.'>'.$projects['name'].' - '.$projects['type'].'</option>');
-                                                    $j++; //nb de projets dans la liste ++
                                                 }
                                                 ?>
                                             </select>

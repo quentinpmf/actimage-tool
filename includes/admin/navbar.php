@@ -7,7 +7,7 @@
         </ul>
     </div>
     <div class="mx-auto order-0">
-        <span class="navbar-brand mx-auto"><?php echo($_SESSION['UserPrenom']." ".$_SESSION['UserNom']." - Espace Administration") ?></span>
+        <span class="navbar-brand mx-auto"><?php echo("[Espace Administration] ".$_SESSION['UserPrenom']." ".$_SESSION['UserNom']) ?></span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
             <span class="navbar-toggler-icon"></span>
         </button>
