@@ -161,7 +161,7 @@ if(!isset($_SESSION['UserEmail']))
                                                 <?php
                                                 $j = 1; //nb de projets dans la liste
 
-                                                $req2 = $bdd->query("SELECT * FROM projects ORDER BY projects.name ASC");
+                                                $req2 = $bdd->query("SELECT * FROM projects");
                                                 while ($projects = $req2->fetch())
                                                 {
                                                     //selection du projet dans la liste
