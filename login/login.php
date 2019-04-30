@@ -10,9 +10,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 
         <!-- Favicon -->
-        <link rel="icon" href="../img/favicon.png">
+        <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
-        <title>Drag'n Resume</title>
+        <title>ActiTool</title>
         <!-- Custom styles for this template -->
 
         <style>
