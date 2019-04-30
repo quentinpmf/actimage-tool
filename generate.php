@@ -93,7 +93,7 @@ if(isset($_POST) && !empty($_POST))
 }
 else
 {
-    header('location:scheduler?error=noImputationsSelected');
+    header('location:scheduler.php?error=noImputationsSelected');
 }
 
 $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technologie SharePoint 2016
