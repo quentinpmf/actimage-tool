@@ -20,7 +20,7 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body center">' +
-        '<input type="text" data-id="'+number+'" name="issue_number-'+number+'" size="5" value="#" onfocusout="getIssueSubject($(this))"/>' +
+        '<input type="text" data-id="'+number+'" name="issue_number-'+number+'" size="5" value="#" onchange="getIssueSubject($(this))"/>' +
         '</div>' +
         '</div>' +
         '</div>' +

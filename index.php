@@ -189,7 +189,7 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body center">
-                                            <input type="text" data-id="<?php echo($i) ?>" name="issue_number-<?php echo($i) ?>" size="5" value="<?php echo($imputations['issue_number']) ?>" onfocusout="getIssueSubject($(this))"/>
+                                            <input type="text" data-id="<?php echo($i) ?>" name="issue_number-<?php echo($i) ?>" size="5" value="<?php echo($imputations['issue_number']) ?>" onchange="getIssueSubject($(this))"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -285,7 +285,7 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body center">
-                                            <input type="text" data-id="0" name="issue_number-0" size="5" value="#" onfocusout="getIssueSubject($(this))"/>
+                                            <input type="text" data-id="0" name="issue_number-0" size="5" value="#" onchange="getIssueSubject($(this))"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
