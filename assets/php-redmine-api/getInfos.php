@@ -10,11 +10,15 @@ if(isset($_POST['issueId']) && $_POST['issueId'] != "")
     $issueId = $_POST['issueId'];
     $issueDetails = $client->issue->show($issueId);
 
-    $total_estimated_hours = $issueDetails['issue']['total_estimated_hours'];
+    if(isset($issueDetails['issue']['total_estimated_hours']) && $issueDetails['issue']['total_estimated_hours'] != 0){
+        $total_estimated_hours = $issueDetails['issue']['total_estimated_hours'] / 8;
+    }else{
+        $total_estimated_hours = "";
+    }
     $subject = $issueDetails['issue']['subject'];
 
     $array = array(
-        "total_estimated_hours" => $total_estimated_hours / 8,
+        "total_estimated_hours" => $total_estimated_hours,
         "subject" => $subject,
     );
 }

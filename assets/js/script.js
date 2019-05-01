@@ -166,11 +166,9 @@ function parseHtmlEntities(str) {
 }
 
 function getIssueSubject(object) {
+    console.log('getIssueSubject');
     var lineId = object[0].dataset.id;
     var issueId = object[0].value.replace('#','');
-
-    document.getElementsByName('allocated_time-'+lineId)[0].value = "";
-    document.getElementsByName('description-'+lineId)[0].value = "";
 
     document.getElementById("loading").setAttribute('style', 'display:block');
 
@@ -181,11 +179,20 @@ function getIssueSubject(object) {
         dataType: "json",
         data:{issueId:issueId},
         success:function(data){
-            if(data && data['total_estimated_hours'] != "" && data['subject'] != "" ) {
+            console.log('data = ',data);
+            if(data) {
                 console.log('description = ',parseHtmlEntities(data['subject']));
-                var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data['subject']);
                 console.log('allocated_time = ',data['total_estimated_hours']);
-                document.getElementsByName('allocated_time-'+lineId)[0].value = data['total_estimated_hours'];
+
+                if(data['subject'] != ""){
+                    document.getElementsByName('description-'+lineId)[0].value = "";
+                    var x = document.getElementsByName('description-'+lineId)[0].value = parseHtmlEntities(data['subject']);
+                }
+
+                if(data['total_estimated_hours'] != ""){
+                    document.getElementsByName('allocated_time-'+lineId)[0].value = "";
+                    document.getElementsByName('allocated_time-'+lineId)[0].value = data['total_estimated_hours'];
+                }
             }
         }
     });
