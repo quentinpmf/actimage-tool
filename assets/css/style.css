@@ -176,14 +176,19 @@ h3 input{
 
 .nostylelink{
     font-size: 25px;
-    color:black;
+    color:white;
 }
 
 .nostylelink:hover{
     text-decoration: none;
+    color:white;
 }
 
-.navbar{
+#hidden_projects{
+    display:none;
+}
+
+.nostylelink .card{
     background: 	#f71037; /* fallback for old browsers */
     background: -webkit-linear-gradient(right, #f71037, #ff632c);
     background: -moz-linear-gradient(right, #f71037, #ff632c);
@@ -191,8 +196,4 @@ h3 input{
     background: linear-gradient(to left, #f71037, #ff632c);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-#hidden_projects{
-    display:none;
 }

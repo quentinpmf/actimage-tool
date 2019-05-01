@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md" style="padding:0px;background-color: #FF8029;color:white">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark" style="padding:0px">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
             <a class="navbar-brand" href="../index.php">
