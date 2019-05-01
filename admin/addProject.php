@@ -24,9 +24,8 @@ if(!isset($_SESSION['UserEmail']))
 
 var_dump($_POST);
 
-if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST['projectType']) && !empty($_POST['projectType']) && isset($_FILES['projectLogo']) && !empty($_FILES['projectLogo']))
+if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST['projectType']) )
 {
-
     $search = explode(",","ç,æ,œ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u");
     $replace = explode(",","c,ae,oe,a,e,i,o,u,a,e,i,o,u,a,e,i,o,u,y,a,e,i,o,u,a,e,i,o,u");
     $lower_name = str_replace($search, $replace, $_POST['projectName']);
@@ -46,18 +45,22 @@ if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST
     //ajout du type de projet
     $lower_name = $lower_name."_".$lower_type;
 
-    $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
-    //1. strrchr renvoie l'extension avec le point (« . »).
-    //2. substr(chaine,1) ignore le premier caractère de chaine.
-    //3. strtolower met l'extension en minuscules.
-    $extension_upload = strtolower(  substr(  strrchr($_FILES['projectLogo']['name'], '.')  ,1)  );
-    if ( in_array($extension_upload,$extensions_valides) ) echo "Extension correcte";
+    //logo
+    var_dump($_FILES);
+    if(isset($_FILES['projectLogo']['name']) && !empty($_FILES['projectLogo']['name'])){
+        $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+        //1. strrchr renvoie l'extension avec le point (« . »).
+        //2. substr(chaine,1) ignore le premier caractère de chaine.
+        //3. strtolower met l'extension en minuscules.
+        $extension_upload = strtolower(  substr(  strrchr($_FILES['projectLogo']['name'], '.')  ,1)  );
+        if ( in_array($extension_upload,$extensions_valides) ) echo "Extension correcte";
 
-    $nom = "../assets/images/logos/".$lower_name.".".$extension_upload;
-    $resultat = move_uploaded_file($_FILES['projectLogo']['tmp_name'],$nom);
-    if (!$resultat) {
-        echo "Transfert fail";
-        die;
+        $nom = "../assets/images/logos/".$lower_name.".".$extension_upload;
+        $resultat = move_uploaded_file($_FILES['projectLogo']['tmp_name'],$nom);
+        if (!$resultat) {
+            echo "Transfert fail";
+            die;
+        }
     }
 
     $req=$bdd->prepare("INSERT INTO projects(name,type,lower,logo) VALUES (:projectName,:projectType,:projectLower,:projectLogo)");
@@ -65,7 +68,7 @@ if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST
         'projectName'=>$_POST['projectName'],
         'projectType'=>$_POST['projectType'],
         'projectLower'=>$lower_name,
-        'projectLogo'=>$lower_name.".".$extension_upload
+        'projectLogo'=>$extension_upload ? $lower_name.".".$extension_upload : ""
     ));
 
     header('location:gestion_projets.php');

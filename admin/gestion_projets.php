@@ -211,9 +211,9 @@ if(!isset($_SESSION['UserEmail']))
             <label for="projectName">Nom du projet</label>
             <input type="text" id="projectName" name="projectName" maxlength="30" placeholder="April" required/><br>
             <label for="projectType">Type du projet</label>
-            <input type="text" id="projectType" name="projectType" maxlength="30" placeholder="TMA" required/><br>
+            <input type="text" id="projectType" name="projectType" maxlength="30" placeholder="TMA"/><br>
             <label for="projectLogo">Logo du projet</label>
-            <input type="file" id="projectLogo" name="projectLogo" required><br>
+            <input type="file" id="projectLogo" name="projectLogo"><br>
             <input type="submit" value="Valider">
         </form>
     </div>

@@ -160,7 +160,7 @@ if(!isset($_SESSION['UserEmail']))
                                             <select name="projet-<?php echo($i) ?>" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
                                                 <?php
 
-                                                $req2 = $bdd->query("SELECT * FROM projects");
+                                                $req2 = $bdd->query("SELECT * FROM projects ORDER BY name ASC");
                                                 while ($projects = $req2->fetch())
                                                 {
                                                     //selection du projet dans la liste
@@ -272,7 +272,7 @@ if(!isset($_SESSION['UserEmail']))
                                         <div class="card-body">
                                             <select name="projet-0" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
                                                 <?php
-                                                $req = $bdd->query("SELECT * FROM projects");
+                                                $req = $bdd->query("SELECT * FROM projects ORDER BY name ASC");
                                                 while ($projects = $req->fetch())
                                                 {
                                                     echo('<option value="'.stripAccentsAndLower($projects['lower']).'">'.$projects['name'].' - '.$projects['type'].'</option>');
