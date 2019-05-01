@@ -1,7 +1,9 @@
 //ajoute une ligne
 function addRow() {
     var number = document.getElementsByClassName("infoRow").length;
-    var projectSelection = "";
+
+    <!-- On ajoute les projets -->
+    var projects = document.getElementById("hidden_projects");
 
     <!-- lignes suivantes -->
     var contentRow = ''+
@@ -9,22 +11,8 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body">' +
-        '<select name="projet-'+number+'">' +
-        '<option value="april_tma">April - TMA</option>' +
-        '<option value="april_evols">April - Evols</option>' +
-        '<option value="batigere_tma">Batigère - TMA</option>' +
-        '<option value="batigere_evols">Batigère - Evols</option>' +
-        '<option value="ena_tma">ENA - TMA</option>' +
-        '<option value="ena_evols">ENA - Evols</option>' +
-        '<option value="glh_tma">GLH - TMA</option>' +
-        '<option value="glh_evols">GLH - Evols</option>' +
-        '<option value="inao_tma">INAO - TMA</option>' +
-        '<option value="inao_evols">INAO - Evols</option>' +
-        '<option value="inao_princes_tma">INAO Princes - TMA</option>' +
-        '<option value="inao_princes_evols">INAO Princes - Evols</option>' +
-        '<option value="vnf_tma">VNF - TMA</option>' +
-        '<option value="vnf_evols">VNF - Evols</option>' +
-        '<option value="an-parlement-des-enfants_projet">AN - Parlement des enfants - Projet</option>' +
+        '<select name="projet-'+number+'" style="max-width: 210px;">' +
+        projects.innerHTML +
         '</select>' +
         '</div>' +
         '</div>' +
@@ -240,7 +228,6 @@ function addDatePickerReporting(event){
 
     //ajout d'une ligne
     var number = document.getElementsByClassName("congesFeriesLine").length;
-    var projectSelection = "";
 
     <!-- lignes suivantes -->
     var contentRow = ''+

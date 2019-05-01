@@ -192,3 +192,7 @@ h3 input{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+#hidden_projects{
+    display:none;
+}

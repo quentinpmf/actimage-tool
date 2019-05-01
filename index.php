@@ -349,6 +349,17 @@ if(!isset($_SESSION['UserEmail']))
                     ?>
 				</div>
 
+                <!-- div caché pour récupérer les projets lors du bouton : Ajouter ligne -->
+                <div id="hidden_projects">
+                    <?php
+                    $req = $bdd->query("SELECT * FROM projects ORDER BY name ASC");
+                    while ($projects = $req->fetch())
+                    {
+                        echo('<option value="'.stripAccentsAndLower($projects['lower']).'">'.$projects['name'].' - '.$projects['type'].'</option>');
+                    }
+                    ?>
+                </div>
+
 				<div class="pt-5 text-center">
 					<a class="btn btn-success theme-btn theme-btn-ghost-green font-weight-bold" onclick="addRow(); return false;" id="addRow" href="">Ajouter une ligne</a>
                     <a class="btn btn-warning theme-btn theme-btn-ghost-orange font-weight-bold" onclick="save(); return false;" href="">Sauvegarder</a>
