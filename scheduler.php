@@ -94,10 +94,15 @@ if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
                 $req5 = $bdd->query("SELECT * FROM imputations WHERE user_id=".$_SESSION['UserId']." ORDER BY imputation_date  DESC");
                 while ($imputations = $req5->fetch())
                 {
-                    $marge = $imputations['allocated_time']-$imputations['passed_time'];
-                    if($marge >= 0) {
+                    $marge = "undefined";
+                    if(isset($imputations['allocated_time']) && $imputations['allocated_time'] != ""){
+                        $marge = $imputations['allocated_time']-$imputations['passed_time'];
+                    }
+
+                    $margeColor = "blue";
+                    if(isset($marge) && $marge > 0) {
                         $margeColor = 'green';
-                    }else{
+                    }elseif($marge != "undefined"){
                         $margeColor = 'red';
                     }
 
@@ -161,8 +166,18 @@ if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
                         <div class="col-12 col-md-6 col-xl-<?php echo($width); ?> pr-xl-3">
                             <div class="card rounded mt-2 mb-2">
                                 <div class="card-body nocolor stripped">
-                                    <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type'].' ('.$imputations['issue_number'].') </b></br>');
-                                    echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh > '.$imputations['allocated_time'].'jh </span></br>');
+                                    <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type']);
+                                    if(isset($imputations['issue_number']) && $imputations['issue_number'] !="#"){
+                                        echo(' ('.$imputations['issue_number'].') </b></br>');
+                                    }else{
+                                        echo('</b></br>');
+                                    }
+                                    echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh </span>');
+                                    if(isset($imputations['allocated_time']) && $imputations['allocated_time'] !=""){
+                                        echo('<span class="'.$margeColor.'"> > '.$imputations['allocated_time'].'jh </span></br>');
+                                    }else{
+                                        echo('</br>');
+                                    }
                                     echo('<i>'.$imputations['description'].'</i>'); ?>
                                     <div class="avatar-container s40">
                                         <?php echo('<img alt="" class="img-circle" src="assets/images/logos/'.$arrProjects[$imputations['projet_id']]['logo'].'">'); ?>
@@ -183,8 +198,18 @@ if(isset($_GET['error']) && $_GET['error'] == "noImputationsSelected") {
                         <div class="col-12 col-md-6 col-xl-<?php echo($width); ?> pr-xl-3">
                             <div class="card rounded mt-2 mb-2">
                                 <div class="card-body nocolor stripped">
-                                    <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type'].' ('.$imputations['issue_number'].') </b></br>');
-                                    echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh > '.$imputations['allocated_time'].'jh </span></br>');
+                                    <?php echo('<b>'.$arrProjects[$imputations['projet_id']]['name'].' - '.$arrProjects[$imputations['projet_id']]['type']);
+                                    if(isset($imputations['issue_number']) && $imputations['issue_number'] !="#"){
+                                        echo(' ('.$imputations['issue_number'].') </b></br>');
+                                    }else{
+                                        echo('</b></br>');
+                                    }
+                                    echo('<span class="'.$margeColor.'">'.$imputations['passed_time'].'jh </span>');
+                                    if(isset($imputations['allocated_time']) && $imputations['allocated_time'] !=""){
+                                        echo('<span class="'.$margeColor.'"> > '.$imputations['allocated_time'].'jh </span></br>');
+                                    }else{
+                                        echo('</br>');
+                                    }
                                     echo('<i>'.$imputations['description'].'</i>'); ?>
                                     <div class="avatar-container s40">
                                         <?php echo('<img alt="" class="img-circle" src="assets/images/logos/'.$arrProjects[$imputations['projet_id']]['logo'].'">'); ?>

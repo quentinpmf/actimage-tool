@@ -40,10 +40,23 @@ if(isset($_POST) && !empty($_POST))
 
     $strImputationsToInclude = implode("','", $arrImputationsToInclude); //imputations en string
 
+    $oldIssueNumber = "";
+    $oldDepassement = "";
+
     //récupération des imputations
     $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date IN('$strImputationsToInclude') AND user_id=".$_SESSION['UserId']." ORDER BY `projet_id` ASC");
     while ($imputation = $req->fetch())
     {
+        $depassement = "";
+        if(isset($oldIssueNumber) && $oldIssueNumber != "" && $oldIssueNumber == $imputation['issue_number'] && isset($imputation['issue_number']) && $imputation['issue_number'] != "#")
+        {
+            $depassement = $imputation['allocated_time']-$imputation['passed_time'] + $oldDepassement;
+        }
+        else{
+            $oldIssueNumber = "";
+            $oldDepassement = "";
+        }
+
         $req2 = $bdd->query("SELECT * FROM projects WHERE id='".$imputation['projet_id']."'");
         while ($project = $req2->fetch())
         {
@@ -54,7 +67,9 @@ if(isset($_POST) && !empty($_POST))
              */
 
             $conformeRedmine = ($imputation['conforme_redmine']) ? 'Conforme Redmine' : 'Non conforme Redmine';
-            $depassement = $imputation['allocated_time']-$imputation['passed_time'];
+
+            $issueId = $imputation['issue_number'];
+
             if($depassement < 0) {
                 $valueDepassement = str_replace("-", "", $depassement);
                 $strDepassement = 'Dépassement de '.($valueDepassement*8).'h';
@@ -89,6 +104,13 @@ if(isset($_POST) && !empty($_POST))
         }
 
         $txt .= $state['libelle'].$remarque.'</li>';
+
+        $oldIssueNumber = $imputation['issue_number'];
+        if(isset($imputation['allocated_time']) && $imputation['allocated_time'] != ""){
+            $oldDepassement = $imputation['allocated_time']-$imputation['passed_time'];
+        }else{
+            $oldDepassement = 0;
+        }
     }
 }
 else
@@ -99,6 +121,69 @@ else
 $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technologie SharePoint 2016
 - Client dépassant les durées prévues pour les points quinzomadaires
 - Nécessité de revoir le mode organisationnel concernant la validation des livrables de recette";
+
+//Récupération des jours fériés dans la semaine
+function getHolidays($year = null)
+{
+        if ($year === null)
+        {
+                $year = intval(strftime('%Y'));
+        }
+
+        $easterDate = easter_date($year);
+        $easterDay = date('j', $easterDate);
+        $easterMonth = date('n', $easterDate);
+        $easterYear = date('Y', $easterDate);
+
+        $holidays = array(
+                // Jours feries fixes
+                mktime(0, 0, 0, 1, 1, $year),// 1er janvier
+                mktime(0, 0, 0, 5, 1, $year),// Fete du travail
+                mktime(0, 0, 0, 5, 8, $year),// Victoire des allies
+                mktime(0, 0, 0, 7, 14, $year),// Fete nationale
+                mktime(0, 0, 0, 8, 15, $year),// Assomption
+                mktime(0, 0, 0, 11, 1, $year),// Toussaint
+                mktime(0, 0, 0, 11, 11, $year),// Armistice
+                mktime(0, 0, 0, 12, 25, $year),// Noel
+
+                // Jour feries qui dependent de paques
+                mktime(0, 0, 0, $easterMonth, $easterDay + 1, $easterYear),// Lundi de paques
+                mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),// Ascension
+                mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear), // Pentecote
+        );
+
+        sort($holidays);
+
+        return $holidays;
+}
+function getHolidaysInThisWeek(){
+    $date = date('Y-m-d');
+    $week = date("W", strtotime($date));
+    $year = date("Y", strtotime($date));
+
+    $week_array = array();
+    $dto = new DateTime();
+    $dto->setISODate($year, $week);
+    for($i = 0;$i < 5;$i++){
+        $week_array[$i] = strtotime($dto->format('Y-m-d'));
+        $dto->modify('+1 days');
+    }
+
+    $arrHolidaysInThisWeek = array();
+    $holidays = getHolidays(2019);
+
+    foreach($week_array as $day){
+        foreach($holidays as $holidayDay){
+            if($day == $holidayDay)
+            {
+                $arrHolidaysInThisWeek[] = date('Y-m-d', $day);
+            }
+        }
+    }
+    return $arrHolidaysInThisWeek;
+}
+
+$arrHolidaysInThisWeek = getHolidaysInThisWeek();
 
 ?>
 
@@ -124,7 +209,7 @@ $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technol
                 <div class="row">
                     <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
                             <div class="card-body nocolor">
-                                <textarea name="analyse_qualitative" rows="4" cols="190" placeholder="<?php echo($txtAnalyseQualitative); ?>"></textarea>
+                                <textarea required name="analyse_qualitative" rows="4" cols="190" placeholder="<?php echo($txtAnalyseQualitative); ?>"></textarea>
                             </div>
                     </div>
                 </div>
@@ -142,24 +227,6 @@ $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technol
                 <div class="row">
                     <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
                         <div class="card-body nocolor">
-
-                            <!--
-                            <ul>
-                                <li>&nbsp;April (TMA) :
-                                    <ul>
-                                        <li>1 (Conforme Redmine / Pas de d&eacute;passement) : En d&eacute;veloppement / 1</li>
-                                        <li>test2</li>
-                                    </ul>
-                                </li>
-                                <li>April (EVOLUTIONS) :&nbsp;
-                                    <ul>
-                                        <li>test1</li>
-                                        <li>test2</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            -->
-
                             <textarea id="editor1" name="analyse_quantitative" rows="10" cols="190" placeholder="Description"><?php echo($txt); ?></textarea>
                         </div>
                     </div>
@@ -218,10 +285,27 @@ $txtAnalyseQualitative = "- Nécessité de monter en compétences sur la technol
                 <div class="row">
                     <div class="col-12 col-md-12 col-xl-12 pr-xl-12 pt-md-12">
                         <div id="conges_feries">
-                            <div class="card-body nocolor congesFeriesLine">
-                                <input onfocusout="datepickerReporting(event);" name="conges_feries-0" type="date"/>
-                                <input type="text" name="justificatif-conges-0" name="justificatif-conges-0" placeholder="Justificatif" size="50"/>
-                            </div>
+                            <?php
+                            if(!empty($arrHolidaysInThisWeek)){
+                                $i = 0;
+                                foreach($arrHolidaysInThisWeek as $index=>$date){
+                                    echo('
+                                            <div class="card-body nocolor congesFeriesLine">
+                                                <input onfocusout="datepickerReporting(event);" value="'.$date.'" name="conges_feries-'.$i.'" type="date"/>
+                                                <input type="text" name="justificatif-conges-'.$i.'" name="justificatif-conges-'.$i.'" value="Férié" size="50"/>
+                                             </div>
+                                        ');
+                                    $i++;
+                                }
+                            }else{
+                                echo('
+                                        <div class="card-body nocolor congesFeriesLine">
+                                            <input onfocusout="datepickerReporting(event);" name="conges_feries-0" type="date"/>
+                                            <input type="text" name="justificatif-conges-0" name="justificatif-conges-0" placeholder="Justificatif" size="50"/> 
+                                        </div>
+                                    ');
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,7 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body">' +
-        '<select name="projet-'+number+'" style="max-width: 210px;">' +
+        '<select onchange="changeProject(this)" name="projet-'+number+'" style="max-width: 210px;">' +
         projects.innerHTML +
         '</select>' +
         '</div>' +
@@ -20,14 +20,14 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body center">' +
-        '<input type="text" data-id="'+number+'" name="issue_number-'+number+'" size="5" value="#" onchange="getIssueSubject($(this))"/>' +
+        '<input type="text" data-id="'+number+'" name="issue_number-'+number+'" id="issue_number-'+number+'" size="5" value="#" onchange="getIssueSubject($(this))"/>' +
         '</div>' +
         '</div>' +
         '</div>' +
         '<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body center">' +
-        '<input type="checkbox" class="conforme_redmine" id="'+number+'" name="conforme_redmine-'+number+'" size="5" checked/>' +
+        '<input type="checkbox" class="conforme_redmine" id="conforme_redmine-'+number+'" name="conforme_redmine-'+number+'" size="5" checked/>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -41,14 +41,14 @@ function addRow() {
         '<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body p-6 center">' +
-        '<input type="text" class="allocated_time" id="'+number+'" name="allocated_time-'+number+'" size="5"/>' +
+        '<input type="text" class="allocated_time" id="allocated_time-'+number+'" name="allocated_time-'+number+'" size="5"/>' +
         '</div>' +
         '</div><!--//card-->' +
         '</div>' +
         '<div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">' +
         '<div class="card rounded">' +
         '<div class="card-body">' +
-        '<select name="state-'+number+'">' +
+        '<select name="state-'+number+'" id="state-'+number+'">' +
         '<option value="en_developpement">En développement</option>' +
         '<option value="en_recette_preprod">En recette - en préproduction</option>' +
         '<option value="en_production">En production</option>' +
@@ -277,4 +277,28 @@ function changerUserRole(event){
             }
         }
     });
+}
+
+function changeProject(selectObject) {
+    console.log('selectObject = ',selectObject.name);
+
+    var selectName = selectObject.name;
+    var selectParts = selectName.split('-');
+    var selectNumber = selectParts[1];
+    console.log('selectNumber = ',selectNumber);
+
+    var value = selectObject.value;
+    console.log('value = ',value);
+    if(value == "equipe_point" || value == "multi-projets_point"){
+        $( "#issue_number-"+selectNumber ).hide();
+        $( "#conforme_redmine-"+selectNumber ).hide();
+        $( "#allocated_time-"+selectNumber ).hide();
+        $( "#state-"+selectNumber ).hide();
+    }
+    else{
+        $( "#issue_number-"+selectNumber ).show();
+        $( "#conforme_redmine-"+selectNumber ).show();
+        $( "#allocated_time-"+selectNumber ).show();
+        $( "#state-"+selectNumber ).show();
+    }
 }

@@ -152,12 +152,18 @@ if(!isset($_SESSION['UserEmail']))
                         $req = $bdd->query("SELECT * FROM imputations WHERE imputation_date = '".$imputation_date."' AND user_id='".$_SESSION['UserId']."' ORDER BY id ASC");
                         while ($imputations = $req->fetch())
                         {
+                            $req2 = $bdd->query("SELECT lower FROM projects WHERE id = '".$imputations['projet_id']."'");
+                            while ($proj = $req2->fetch())
+                            {
+                                $projectName = $proj['lower'];
+                            }
+
                             ?>
                             <div class="row infoRow number-<?php echo($i) ?>" id="<?php echo($i) ?>">
                                 <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body">
-                                            <select name="projet-<?php echo($i) ?>" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
+                                            <select onchange="changeProject(this);" name="projet-<?php echo($i) ?>" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
                                                 <?php
 
                                                 $req2 = $bdd->query("SELECT * FROM projects ORDER BY name ASC");
@@ -189,7 +195,7 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body center">
-                                            <input type="text" data-id="<?php echo($i) ?>" name="issue_number-<?php echo($i) ?>" size="5" value="<?php echo($imputations['issue_number']) ?>" onchange="getIssueSubject($(this))"/>
+                                            <input <?php if($projectName == "equipe_point" || $projectName == "multi-projets_point"){echo("style='display:none'");} ?> type="text" data-id="<?php echo($i) ?>" id="issue_number-<?php echo($i) ?>" name="issue_number-<?php echo($i) ?>" size="5" value="<?php echo($imputations['issue_number']) ?>" onchange="getIssueSubject($(this))"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -197,7 +203,7 @@ if(!isset($_SESSION['UserEmail']))
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
                                             <?php ?>
-                                            <input type="checkbox" class="conforme_redmine" id="<?php echo($i) ?>" name="conforme_redmine-<?php echo($i) ?>" size="5" <?php echo($checked) ?>/>
+                                            <input <?php if($projectName == "equipe_point" || $projectName == "multi-projets_point"){echo("style='display:none'");} ?> type="checkbox" class="conforme_redmine" id="conforme_redmine-<?php echo($i) ?>" name="conforme_redmine-<?php echo($i) ?>" size="5" <?php echo($checked) ?>/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -211,18 +217,19 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <input type="text" class="allocated_time" name="allocated_time-<?php echo($i) ?>" size="5" value="<?php echo($imputations['allocated_time']) ?>"/>
+                                            <input <?php if($projectName == "equipe_point" || $projectName == "multi-projets_point"){echo("style='display:none'");} ?> type="text" class="allocated_time" id="allocated_time-<?php echo($i) ?>" name="allocated_time-<?php echo($i) ?>" size="5" value="<?php echo($imputations['allocated_time']) ?>"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <select name="state-<?php echo($i) ?>"> <!-- état -->
+                                            <select <?php if($projectName == "equipe_point" || $projectName == "multi-projets_point"){echo("style='display:none'");} ?>
+                                                    name="state-<?php echo($i) ?>" id="state-<?php echo($i) ?>"> <!-- état -->
                                                 <?php
                                                 $j = 1; //nb d'états dans la liste
 
-                                                $req3 = $bdd->query("SELECT * FROM states");
+                                                $req3 = $bdd->query("SELECT * FROM states ORDER BY id asc");
                                                 while ($states = $req3->fetch())
                                                 {
                                                     //selection du projet dans la liste
@@ -270,7 +277,7 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body">
-                                            <select name="projet-0" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
+                                            <select onchange="changeProject(this);" name="projet-0" style="max-width: 210px;"> <!-- récupération des projets depuis la BdD -->
                                                 <?php
                                                 $req = $bdd->query("SELECT * FROM projects ORDER BY name ASC");
                                                 while ($projects = $req->fetch())
@@ -285,14 +292,14 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body center">
-                                            <input type="text" data-id="0" name="issue_number-0" size="5" value="#" onchange="getIssueSubject($(this))"/>
+                                            <input type="text" data-id="0" id="issue_number-0" name="issue_number-0" size="5" value="#" onchange="getIssueSubject($(this))"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <input type="checkbox" class="conforme_redmine" id="0" name="conforme_redmine-0" size="5" checked/>
+                                            <input type="checkbox" class="conforme_redmine" name="conforme_redmine-0" id="conforme_redmine-0" size="5" checked/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -306,16 +313,16 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <input type="text" class="allocated_time" name="allocated_time-0" size="5"/>
+                                            <input type="text" class="allocated_time" name="allocated_time-0" id="allocated_time-0" size="5"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <select name="state-0"> <!-- état -->
+                                            <select name="state-0" id="state-0"> <!-- état -->
                                                 <?php
-                                                $req = $bdd->query("SELECT * FROM states");
+                                                $req = $bdd->query("SELECT * FROM states ORDER BY id ASC");
                                                 while ($states = $req->fetch())
                                                 {
                                                     echo('<option value="'.stripAccentsAndLower($states['lower']).'">'.$states['libelle'].'</option>');
