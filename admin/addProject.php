@@ -22,8 +22,6 @@ if(!isset($_SESSION['UserEmail']))
     header('location:../login/login.php');
 }
 
-var_dump($_POST);
-
 if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST['projectType']) )
 {
     $search = explode(",","ç,æ,œ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u");
@@ -42,11 +40,12 @@ if(isset($_POST['projectName']) && !empty($_POST['projectName']) && isset($_POST
     $lower_type = str_replace("---", "--", $lower_type);
     $lower_type = str_replace("--", "-", $lower_type);
 
-    //ajout du type de projet
-    $lower_name = $lower_name."_".$lower_type;
+    //ajout du type de projet si il y en a un
+    if($lower_type != ""){
+        $lower_name = $lower_name."_".$lower_type;
+    }
 
     //logo
-    var_dump($_FILES);
     if(isset($_FILES['projectLogo']['name']) && !empty($_FILES['projectLogo']['name'])){
         $extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
         //1. strrchr renvoie l'extension avec le point (« . »).
