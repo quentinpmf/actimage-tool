@@ -291,8 +291,8 @@ $arrHolidaysInThisWeek = getHolidaysInThisWeek();
                                 foreach($arrHolidaysInThisWeek as $index=>$date){
                                     echo('
                                             <div class="card-body nocolor congesFeriesLine">
-                                                <input onfocusout="datepickerReporting(event);" value="'.$date.'" name="conges_feries-'.$i.'" type="date"/>
-                                                <input type="text" name="justificatif-conges-'.$i.'" name="justificatif-conges-'.$i.'" value="Férié" size="50"/>
+                                                <input onfocusout="datepickerReporting(event);" value="'.$date.'" name="conges_feries-'.$i.'" type="date" readonly/>
+                                                <input type="text" name="justificatif-conges-'.$i.'" name="justificatif-conges-'.$i.'" value="Férié" size="50" readonly/>
                                              </div>
                                         ');
                                     $i++;
