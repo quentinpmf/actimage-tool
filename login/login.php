@@ -64,7 +64,7 @@
                 </div>
 
                 <div id="usersInscrits">
-                    <p class="noSpaceBottom"><b>Ces ActiUsers utilisent cette plateforme !</b></p>
+                    <p class="noSpaceBottom"><b>Ces ActiUsers utilisent la plateforme !</b></p>
                     <p><?php echo($strUsersToDisplay); ?></p>
                 </div>
 
