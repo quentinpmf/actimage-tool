@@ -19,6 +19,21 @@
         <link href="../assets/css/login.css" rel="stylesheet" type="text/css">
     </head>
 
+    <?php
+    include('connectToBDD/conn.php');
+    //récupération des utilisateurs
+    $strUsersToDisplay = "";
+    $boolFirst = true;
+    $req = $bdd->query("SELECT * FROM users ORDER BY id ASC");
+    while ($users = $req->fetch()) {
+        if($boolFirst == false){
+            $strUsersToDisplay .= ', ';
+        }
+        $strUsersToDisplay .= ($users['prenom'].' '.$users['nom']);
+        $boolFirst = false;
+    }
+    ?>
+
     <body>
         <!-- Page Content -->
         <div class="container">
@@ -47,6 +62,12 @@
                     </form>
 
                 </div>
+
+                <div id="usersInscrits">
+                    <p class="noSpaceBottom"><b>Ces ActiUsers utilisent cette plateforme !</b></p>
+                    <p><?php echo($strUsersToDisplay); ?></p>
+                </div>
+
             </div>
         </div>
     </body>
