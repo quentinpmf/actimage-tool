@@ -22,6 +22,8 @@
         <div class="row">
             <ul>
                 <li>Regrouper la ligne par issueId pour avoir le temps total passé / temps total alloué à la demande</li>
+                <li>Gérer les sauts de ligne dans Commercial/RH/Déplacements </li>
+                <li>Datepicker dans Déplacements ?</li>
             </ul>
         </div>
     </div>
