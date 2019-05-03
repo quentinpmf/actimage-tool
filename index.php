@@ -88,7 +88,7 @@ if(!isset($_SESSION['UserEmail']))
 
                         <div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
                             <div class="card rounded">
-                                <div class="card-body p-6">
+                                <div class="card-body p-2">
                                     <b>Conforme Redmine</b>
                                 </div>
                             </div><!--//card-->
@@ -96,7 +96,7 @@ if(!isset($_SESSION['UserEmail']))
 
 						<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
 							<div class="card rounded">
-								<div class="card-body p-6">
+								<div class="card-body p-2">
                                     <b>Temps passé (jh)</b>
 								</div>
 							</div><!--//card-->
@@ -104,7 +104,7 @@ if(!isset($_SESSION['UserEmail']))
 
 						<div class="col-12 col-md-6 col-xl-1 pr-xl-3 pt-md-3">
 							<div class="card rounded">
-								<div class="card-body p-6">
+								<div class="card-body p-2">
                                     <b>Temps prévu (jh)</b>
 								</div>
 							</div><!--//card-->
@@ -225,7 +225,7 @@ if(!isset($_SESSION['UserEmail']))
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
                                             <select <?php if($projectName == "equipe_point" || $projectName == "multi-projets_point"){echo("style='display:none'");} ?>
-                                                    name="state-<?php echo($i) ?>" id="state-<?php echo($i) ?>"> <!-- état -->
+                                                    name="state-<?php echo($i) ?>" id="state-<?php echo($i) ?>" style="max-width: 210px;"> <!-- état -->
                                                 <?php
                                                 $j = 1; //nb d'états dans la liste
 
@@ -251,8 +251,8 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6">
-                                            <textarea name="description-<?php echo($i) ?>" rows="2" cols="40" placeholder="Description"><?php echo($imputations['description']) ?></textarea>
-                                            <input type="text" class="remarques" name="remarque-<?php echo($i) ?>" size="40" placeholder="Remarques" value="<?php echo($imputations['remarque']) ?>"/>
+                                            <textarea name="description-<?php echo($i) ?>" rows="2" cols="40" placeholder="Description" style="max-width: 350px;"><?php echo($imputations['description']) ?></textarea>
+                                            <input type="text" class="remarques" name="remarque-<?php echo($i) ?>" size="40" placeholder="Remarques" value="<?php echo($imputations['remarque']) ?>" style="max-width: 350px;"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
@@ -320,7 +320,7 @@ if(!isset($_SESSION['UserEmail']))
                                 <div class="col-12 col-md-6 col-xl-2 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
                                         <div class="card-body p-6 center">
-                                            <select name="state-0" id="state-0"> <!-- état -->
+                                            <select name="state-0" id="state-0" style="max-width: 210px;"> <!-- état -->
                                                 <?php
                                                 $req = $bdd->query("SELECT * FROM states ORDER BY id ASC");
                                                 while ($states = $req->fetch())
@@ -334,9 +334,9 @@ if(!isset($_SESSION['UserEmail']))
                                 </div>
                                 <div class="col-12 col-md-6 col-xl-3 pr-xl-3 pt-md-3">
                                     <div class="card rounded">
-                                        <div class="card-body p-6 center">
-                                            <textarea name="description-0" rows="2" cols="40" placeholder="Description"></textarea>
-                                            <input type="text" class="remarques" name="remarque-0" size="40" placeholder="Remarques"/>
+                                        <div class="card-body p-6">
+                                            <textarea name="description-0" rows="2" cols="40" placeholder="Description" style="max-width: 350px;"></textarea>
+                                            <input type="text" class="remarques" name="remarque-0" size="40" placeholder="Remarques" style="max-width: 350px;"/>
                                         </div>
                                     </div><!--//card-->
                                 </div>
